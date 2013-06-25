@@ -1,3 +1,19 @@
+/*
+ * This file is part of gw2spidyWrapper.
+ *
+ * GWTradeWrapper is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gw2spidyWrapper is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with gw2spidyWrapper.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package de.chemist.gw2;
 
 import java.io.BufferedReader;
@@ -7,6 +23,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * 
+ * @author Maximilian Werling
+ * @version 1.0
+ */
 public class SpidyWrapper {
 
 	public static final class BuyOrSell {
@@ -14,11 +35,17 @@ public class SpidyWrapper {
 		public static final String SELL = "sell/";
 	}
 
+	/**
+	 * Holds constants for choosing the output format.
+	 */
 	public static final class Format {
 		public static final String CSV = "csv/";
 		public static final String JSON = "json/";
 	}
 
+	/**
+	 * Holds constants for choosing the API version.
+	 */
 	public static final class Version {
 		public static final String V09 = "v0.9/";
 	}
@@ -36,6 +63,16 @@ public class SpidyWrapper {
 	private static final String BASE_URL = "http://www.gw2spidy.com/api/";
 	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1003.1 Safari/535.19 Awesomium/1.7.1";
 
+	/**
+	 * Returns a list of all crafting disciplines.
+	 * 
+	 * @param format
+	 *            the format you wish the result to be in. See {@code Format}
+	 *            class for alternatives.
+	 * @return String in chosen format.
+	 * @throws SpidyWrapperException
+	 *             if something went wrong.
+	 */
 	public static String getDisciplines(String format)
 			throws SpidyWrapperException {
 		try {
@@ -46,16 +83,42 @@ public class SpidyWrapper {
 		}
 	}
 
-	public static String getFullItemList(String format, int typeId)
+	/**
+	 * Returns a list of all items or information for a single item, if typeId
+	 * is specified.
+	 * 
+	 * @param format
+	 *            the format you wish the result to be in. See {@code Format}
+	 *            class for alternatives.
+	 * @param itemId
+	 *            ID of the item you want information for. -1 will get you the
+	 *            full list.
+	 * @return String in chosen format.
+	 * @throws SpidyWrapperException
+	 *             if something went wrong.
+	 */
+	public static String getFullItemList(String format, int itemId)
 			throws SpidyWrapperException {
 		try {
-			URL url = buildAPIURL(format, API_LIST_ITEM_FULL + typeId);
+			URL url = buildAPIURL(format, API_LIST_ITEM_FULL
+					+ (itemId == -1 ? "all" : itemId));
 			return readBufferedReader(url);
 		} catch (IOException e) {
 			throw new SpidyWrapperException("Failed to get item list!", e);
 		}
 	}
 
+	/**
+	 * Returns the current gem price for 100 gems and the amount of gold you get
+	 * for exchanging 100 gems.
+	 * 
+	 * @param format
+	 *            the format you wish the result to be in. See {@code Format}
+	 *            class for alternatives.
+	 * @return String in chosen format.
+	 * @throws SpidyWrapperException
+	 *             if something went wrong.
+	 */
 	public static String getGemPrice(String format)
 			throws SpidyWrapperException {
 		try {
