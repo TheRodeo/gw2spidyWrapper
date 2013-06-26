@@ -1,4 +1,7 @@
 /*
+ * * gw2spidyWrapper - A simple Wrapper for the Guild Wars 2 Spidy API.
+ * Copyright, 2013 Maximilian Werling
+ * 
  * This file is part of gw2spidyWrapper.
  *
  * GWTradeWrapper is free software: you can redistribute it and/or modify

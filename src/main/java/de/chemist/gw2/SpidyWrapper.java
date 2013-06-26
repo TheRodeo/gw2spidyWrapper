@@ -1,4 +1,7 @@
 /*
+ * gw2spidyWrapper - A simple Wrapper for the Guild Wars 2 Spidy API.
+ * Copyright, 2013 Maximilian Werling
+ * 
  * This file is part of gw2spidyWrapper.
  *
  * GWTradeWrapper is free software: you can redistribute it and/or modify
@@ -30,6 +33,10 @@ import java.net.URL;
  */
 public class SpidyWrapper {
 
+	/**
+	 * Holds constants for the
+	 * {@code SpidyWrapper#getItemListings(String, int, String, int)} method.
+	 */
 	public static final class BuyOrSell {
 		public static final String BUY = "buy/";
 		public static final String SELL = "sell/";
@@ -129,6 +136,18 @@ public class SpidyWrapper {
 		}
 	}
 
+	/**
+	 * Returns information for an item with the specified id.
+	 * 
+	 * @param format
+	 *            the format you wish the result to be in. See {@code Format}
+	 *            class for alternatives.
+	 * @param itemId
+	 *            ID you want the information for.
+	 * @return String in chosen format.
+	 * @throws SpidyWrapperException
+	 *             if something went wrong.
+	 */
 	public static String getItemByID(String format, int itemId)
 			throws SpidyWrapperException {
 		try {
@@ -139,6 +158,20 @@ public class SpidyWrapper {
 		}
 	}
 
+	/**
+	 * Returns the listings for an item with the specified id.
+	 * 
+	 * @param format
+	 *            the format you wish the result to be in. See {@code Format}
+	 *            class for alternatives.
+	 * @param itemId
+	 *            ID you want the listings for.
+	 * @param buyOrSell
+	 * @param pageOffset
+	 * @return String in chosen format.
+	 * @throws SpidyWrapperException
+	 *             if something went wrong.
+	 */
 	public static String getItemListings(String format, int itemId,
 			String buyOrSell, int pageOffset) throws SpidyWrapperException {
 		try {
@@ -150,6 +183,18 @@ public class SpidyWrapper {
 		}
 	}
 
+	/**
+	 * Returns the listings for an item with the specified name.
+	 * 
+	 * @param format
+	 *            the format you wish the result to be in. See {@code Format}
+	 *            class for alternatives.
+	 * @param itemName
+	 * @param pages
+	 * @return String in chosen format.
+	 * @throws SpidyWrapperException
+	 *             if something went wrong.
+	 */
 	public static String getItemsByName(String format, String itemName,
 			int pages) throws SpidyWrapperException {
 		try {
@@ -161,6 +206,16 @@ public class SpidyWrapper {
 		}
 	}
 
+	/**
+	 * Returns information about the rarities.
+	 * 
+	 * @param format
+	 *            the format you wish the result to be in. See {@code Format}
+	 *            class for alternatives.
+	 * @return String in chosen format.
+	 * @throws SpidyWrapperException
+	 *             if something went wrong.
+	 */
 	public static String getRarities(String format)
 			throws SpidyWrapperException {
 		try {
@@ -171,6 +226,17 @@ public class SpidyWrapper {
 		}
 	}
 
+	/**
+	 * Returns information the recipe with the specified ID.
+	 * 
+	 * @param format
+	 *            the format you wish the result to be in. See {@code Format}
+	 *            class for alternatives.
+	 * @param dataId
+	 * @return String in chosen format.
+	 * @throws SpidyWrapperException
+	 *             if something went wrong.
+	 */
 	public static String getRecipeData(String format, int dataId)
 			throws SpidyWrapperException {
 		try {
@@ -181,6 +247,18 @@ public class SpidyWrapper {
 		}
 	}
 
+	/**
+	 * Returns the list of recipies for the given crafting discipline.
+	 * 
+	 * @param format
+	 *            the format you wish the result to be in. See {@code Format}
+	 *            class for alternatives.
+	 * @param disciplineId
+	 * @param pageOffset
+	 * @return String in chosen format.
+	 * @throws SpidyWrapperException
+	 *             if something went wrong.
+	 */
 	public static String getRecipeList(String format, int disciplineId,
 			int pageOffset) throws SpidyWrapperException {
 		try {
@@ -192,6 +270,16 @@ public class SpidyWrapper {
 		}
 	}
 
+	/**
+	 * Returns information about the types and subtypes.
+	 * 
+	 * @param format
+	 *            the format you wish the result to be in. See {@code Format}
+	 *            class for alternatives.
+	 * @return String in chosen format.
+	 * @throws SpidyWrapperException
+	 *             if something went wrong.
+	 */
 	public static String getTypes(String format) throws SpidyWrapperException {
 		try {
 			URL url = buildAPIURL(format, API_LIST_TYPE);
