@@ -96,21 +96,20 @@ public class SpidyWrapper {
 	 * @param format
 	 *            the format you wish the result to be in. See {@code Format}
 	 *            class for alternatives.
-	 * @param itemId
-	 *            ID of the item you want information for. -1 will get you the
-	 *            full list.
+	 * @param typeId
+	 *            ID of the item type. -1 will get you the full list.
 	 * @return String in chosen format.
 	 * @throws SpidyWrapperException
 	 *             if something went wrong.
 	 */
-	public static String getFullItemList(String format, int itemId)
+	public static String getFullItemList(String format, int typeId)
 			throws SpidyWrapperException {
 		try {
 			URL url = buildAPIURL(format, API_LIST_ITEM_FULL
-					+ (itemId == -1 ? "all" : itemId));
-			return checkResult(readBufferedReader(url));
+					+ (typeId == -1 ? "all" : typeId));
+			return readBufferedReader(url);
 		} catch (IOException e) {
-			throw new SpidyWrapperException("No connection!", e);
+			throw new SpidyWrapperException("No items for type ID: " + typeId);
 		}
 	}
 
@@ -167,16 +166,18 @@ public class SpidyWrapper {
 	 *            see {@code BuyOrSell} for alternatives.
 	 * @param itemId
 	 *            ID you want the listings for.
-	 * @param pageOffset
+	 * @param pages
+	 *            determines the amount of returned items. One page contains 50
+	 *            items.
 	 * @return String in chosen format.
 	 * @throws SpidyWrapperException
 	 *             if something went wrong.
 	 */
 	public static String getItemListings(String format, String buyOrSell,
-			int itemId, int pageOffset) throws SpidyWrapperException {
+			int itemId, int pages) throws SpidyWrapperException {
 		try {
 			URL url = buildAPIURL(format,
-					buildItemListingsArgument(itemId, buyOrSell, pageOffset));
+					buildItemListingsArgument(itemId, buyOrSell, pages));
 			return checkResult(readBufferedReader(url));
 		} catch (IOException e) {
 			throw new SpidyWrapperException("No connection!", e);
@@ -271,9 +272,9 @@ public class SpidyWrapper {
 		try {
 			URL url = buildAPIURL(format,
 					buildRecipeListArgument(disciplineId, pages));
-			return checkResult(readBufferedReader(url));
+			return readBufferedReader(url);
 		} catch (IOException e) {
-			throw new SpidyWrapperException("No connection!", e);
+			throw new SpidyWrapperException("No recipes for discipline ID: " + disciplineId);
 		}
 	}
 
