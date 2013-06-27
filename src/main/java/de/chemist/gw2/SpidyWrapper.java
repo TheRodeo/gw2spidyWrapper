@@ -91,8 +91,7 @@ public class SpidyWrapper {
 	}
 
 	/**
-	 * Returns a list of all items or information for a single item, if typeId
-	 * is specified.
+	 * Returns a list of items or a single item, if typeId is specified.
 	 * 
 	 * @param format
 	 *            the format you wish the result to be in. See {@code Format}
@@ -137,7 +136,7 @@ public class SpidyWrapper {
 	}
 
 	/**
-	 * Returns information for an item with the specified id.
+	 * Returns the item with the specified ID.
 	 * 
 	 * @param format
 	 *            the format you wish the result to be in. See {@code Format}
@@ -159,12 +158,13 @@ public class SpidyWrapper {
 	}
 
 	/**
-	 * Returns the listings for an item with the specified id.
+	 * Returns the item listings for the item with the specified ID.
 	 * 
 	 * @param format
 	 *            the format you wish the result to be in. See {@code Format}
 	 *            class for alternatives.
 	 * @param buyOrSell
+	 *            see {@code BuyOrSell} for alternatives.
 	 * @param itemId
 	 *            ID you want the listings for.
 	 * @param pageOffset
@@ -184,13 +184,16 @@ public class SpidyWrapper {
 	}
 
 	/**
-	 * Returns the listings for an item with the specified name.
+	 * Returns a list of items containing the specified search string.
 	 * 
 	 * @param format
 	 *            the format you wish the result to be in. See {@code Format}
 	 *            class for alternatives.
 	 * @param itemName
+	 *            search string
 	 * @param pages
+	 *            determines the amount of returned items. One page contains 50
+	 *            items.
 	 * @return String in chosen format.
 	 * @throws SpidyWrapperException
 	 *             if something went wrong.
@@ -227,12 +230,13 @@ public class SpidyWrapper {
 	}
 
 	/**
-	 * Returns information the recipe with the specified ID.
+	 * Returns the recipe with the specified ID.
 	 * 
 	 * @param format
 	 *            the format you wish the result to be in. See {@code Format}
 	 *            class for alternatives.
 	 * @param dataId
+	 *            ID of the recipe you want information for.
 	 * @return String in chosen format.
 	 * @throws SpidyWrapperException
 	 *             if something went wrong.
@@ -248,22 +252,25 @@ public class SpidyWrapper {
 	}
 
 	/**
-	 * Returns the list of recipies for the given crafting discipline.
+	 * Returns a list of recipies for the given crafting discipline.
 	 * 
 	 * @param format
 	 *            the format you wish the result to be in. See {@code Format}
 	 *            class for alternatives.
 	 * @param disciplineId
-	 * @param pageOffset
+	 *            discipline ID you want the recipes for.
+	 * @param pages
+	 *            determines the amount of returned items. One page contains 50
+	 *            items.
 	 * @return String in chosen format.
 	 * @throws SpidyWrapperException
 	 *             if something went wrong.
 	 */
 	public static String getRecipeList(String format, int disciplineId,
-			int pageOffset) throws SpidyWrapperException {
+			int pages) throws SpidyWrapperException {
 		try {
 			URL url = buildAPIURL(format,
-					buildRecipeListArgument(disciplineId, pageOffset));
+					buildRecipeListArgument(disciplineId, pages));
 			return checkResult(readBufferedReader(url));
 		} catch (IOException e) {
 			throw new SpidyWrapperException("No connection!", e);
