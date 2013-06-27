@@ -1,6 +1,6 @@
 /*
- * * gw2spidyWrapper - A simple Wrapper for the Guild Wars 2 Spidy API.
- * Copyright, 2013 Maximilian Werling
+ * gw2spidyWrapper - A simple Wrapper for the Guild Wars 2 Spidy API.
+ * Copyright 2013 Maximilian Werling
  * 
  * This file is part of gw2spidyWrapper.
  *
@@ -29,5 +29,9 @@ public class SpidyWrapperException extends Exception {
 
 	public SpidyWrapperException(String message, Throwable cause) {
 		super(message, cause);
+	}
+	
+	public SpidyWrapperException(String message) {
+		super(message);
 	}
 }
