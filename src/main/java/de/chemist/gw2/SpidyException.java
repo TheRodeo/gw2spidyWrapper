@@ -25,13 +25,13 @@ package de.chemist.gw2;
  * @version 1.0
  */
 @SuppressWarnings("serial")
-public class SpidyWrapperException extends Exception {
+public class SpidyException extends Exception {
 
-	public SpidyWrapperException(String message, Throwable cause) {
+	public SpidyException(String message, Throwable cause) {
 		super(message, cause);
 	}
 	
-	public SpidyWrapperException(String message) {
+	public SpidyException(String message) {
 		super(message);
 	}
 }
