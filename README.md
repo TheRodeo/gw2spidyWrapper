@@ -1,5 +1,6 @@
 gw2spidyWrapper
 ===============
+Grab the .jar here: https://www.dropbox.com/s/90vkiknsq98k5h7/gw2spidyWrapper-1.0.jar
 
 What is it?
 ===========
