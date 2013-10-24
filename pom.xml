@@ -28,5 +28,16 @@
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
 		</dependency>
+			<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>4.2.3.Final</version>
+		</dependency>
+		<!-- GSON dependency -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.4</version>
+		</dependency>
 	</dependencies>
 </project>

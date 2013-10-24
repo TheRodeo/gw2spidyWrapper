@@ -2,15 +2,17 @@ package de.chemist.gw2;
 
 import org.junit.Test;
 
+import rodeo.base.ws.pojos.SpidyDisciplineResult;
+
 public class SpidyWrapperTest {
 
 	@Test
 	public void testGetDisciplines() {
 		System.out.print("Disciplines: ");
 		try {
-			String result = SpidyWrapper.getDisciplines(SpidyFormat.JSON);
+			final SpidyDisciplineResult result = SpidyWrapper.getDisciplines(SpidyFormat.JSON);
 			System.out.println(result);
-		} catch (SpidyException swe) {
+		} catch (final SpidyException swe) {
 			System.out.println(swe.getMessage());
 		}
 	}
@@ -19,9 +21,9 @@ public class SpidyWrapperTest {
 	public void testGetFullItemList() {
 		System.out.print("Full item list: ");
 		try {
-			String result = SpidyWrapper.getFullItemList(SpidyFormat.JSON, 1);
+			final String result = SpidyWrapper.getFullItemList(SpidyFormat.JSON, 1);
 			System.out.println(result);
-		} catch (SpidyException swe) {
+		} catch (final SpidyException swe) {
 			System.out.println(swe.getMessage());
 		}
 	}
@@ -30,9 +32,9 @@ public class SpidyWrapperTest {
 	public void testGetGemPrice() {
 		System.out.print("Gem price: ");
 		try {
-			String result = SpidyWrapper.getGemPrice(SpidyFormat.JSON);
+			final String result = SpidyWrapper.getGemPrice(SpidyFormat.JSON);
 			System.out.println(result);
-		} catch (SpidyException swe) {
+		} catch (final SpidyException swe) {
 			System.out.println(swe.getMessage());
 		}
 	}
@@ -41,9 +43,9 @@ public class SpidyWrapperTest {
 	public void testGetItem() {
 		System.out.print("Item by ID: ");
 		try {
-			String result = SpidyWrapper.getItem(SpidyFormat.JSON, 1234);
+			final String result = SpidyWrapper.getItem(SpidyFormat.JSON, 1234);
 			System.out.println(result);
-		} catch (SpidyException swe) {
+		} catch (final SpidyException swe) {
 			System.out.println(swe.getMessage());
 		}
 	}
@@ -52,10 +54,9 @@ public class SpidyWrapperTest {
 	public void testGetItemListings() {
 		System.out.print("Listings: ");
 		try {
-			String result = SpidyWrapper.getItemListings(SpidyFormat.JSON,
-					SpidyBuyOrSell.BUY, 1234, 1);
+			final String result = SpidyWrapper.getItemListings(SpidyFormat.JSON, SpidyBuyOrSell.BUY, 1234, 1);
 			System.out.println(result);
-		} catch (SpidyException swe) {
+		} catch (final SpidyException swe) {
 			System.out.println(swe.getMessage());
 		}
 	}
@@ -64,10 +65,9 @@ public class SpidyWrapperTest {
 	public void testGetItems() {
 		System.out.print("Items by name: ");
 		try {
-			String result = SpidyWrapper.getItems(SpidyFormat.JSON, "Eternity",
-					1);
+			final String result = SpidyWrapper.getItems(SpidyFormat.JSON, "Eternity", 1);
 			System.out.println(result);
-		} catch (SpidyException swe) {
+		} catch (final SpidyException swe) {
 			System.out.println(swe.getMessage());
 		}
 	}
@@ -76,9 +76,9 @@ public class SpidyWrapperTest {
 	public void testGetRarities() {
 		System.out.print("Rarities: ");
 		try {
-			String result = SpidyWrapper.getRarities(SpidyFormat.JSON);
+			final String result = SpidyWrapper.getRarities(SpidyFormat.JSON);
 			System.out.println(result);
-		} catch (SpidyException swe) {
+		} catch (final SpidyException swe) {
 			System.out.println(swe.getMessage());
 		}
 	}
@@ -87,9 +87,9 @@ public class SpidyWrapperTest {
 	public void testGetRecipeData() {
 		System.out.print("Recipe Data: ");
 		try {
-			String result = SpidyWrapper.getRecipeData(SpidyFormat.JSON, 1000);
+			final String result = SpidyWrapper.getRecipeData(SpidyFormat.JSON, 1000);
 			System.out.println(result);
-		} catch (SpidyException swe) {
+		} catch (final SpidyException swe) {
 			System.out.println(swe.getMessage());
 		}
 	}
@@ -98,10 +98,9 @@ public class SpidyWrapperTest {
 	public void testGetRecipeList() {
 		System.out.print("Recipe List: ");
 		try {
-			String result = SpidyWrapper.getRecipeList(SpidyFormat.JSON, 100,
-					10);
+			final String result = SpidyWrapper.getRecipeList(SpidyFormat.JSON, 100, 10);
 			System.out.println(result);
-		} catch (SpidyException swe) {
+		} catch (final SpidyException swe) {
 			System.out.println(swe.getMessage());
 		}
 	}
@@ -110,9 +109,9 @@ public class SpidyWrapperTest {
 	public void testGetTypes() {
 		System.out.print("Types: ");
 		try {
-			String result = SpidyWrapper.getTypes(SpidyFormat.JSON);
+			final String result = SpidyWrapper.getTypes(SpidyFormat.JSON);
 			System.out.println(result);
-		} catch (SpidyException swe) {
+		} catch (final SpidyException swe) {
 			System.out.println(swe.getMessage());
 		}
 	}

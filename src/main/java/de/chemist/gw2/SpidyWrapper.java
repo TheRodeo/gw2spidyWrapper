@@ -1,21 +1,17 @@
 /*
  * gw2spidyWrapper - A simple Wrapper for the Guild Wars 2 Spidy API.
  * Copyright 2013 Maximilian Werling
- * 
  * This file is part of gw2spidyWrapper.
- *
  * GWTradeWrapper is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
  * gw2spidyWrapper is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
  * You should have received a copy of the GNU General Public License
- * along with gw2spidyWrapper.  If not, see <http://www.gnu.org/licenses/>.
+ * along with gw2spidyWrapper. If not, see <http://www.gnu.org/licenses/>.
  */
 package de.chemist.gw2;
 
@@ -25,6 +21,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+
+import rodeo.base.dao.pojos.Discipline;
+import rodeo.base.ws.pojos.SpidyDisciplineResult;
+
+import com.google.gson.Gson;
 
 /**
  * 
@@ -46,6 +49,51 @@ public class SpidyWrapper {
 	private static final String BASE_URL = "http://www.gw2spidy.com/api/";
 	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1003.1 Safari/535.19 Awesomium/1.7.1";
 
+	private static final Gson gson = new Gson();
+
+	private static URL buildAPIURL(final SpidyFormat format, final String argument) throws MalformedURLException {
+		final StringBuilder bldr = new StringBuilder(BASE_URL);
+		bldr.append(SpidyVersion.V_09).append(format).append(argument);
+		return new URL(bldr.toString());
+	}
+
+	private static String buildItemListingsArgument(final int itemId, final SpidyBuyOrSell buyOrSell, final int pageOffset) {
+		final StringBuilder bldr = new StringBuilder(API_LISTINGS);
+		bldr.append(itemId).append("/").append(buyOrSell).append(pageOffset);
+		return bldr.toString();
+	}
+
+	private static String buildItemNameArgument(final String name, final int pageOffset) {
+		final StringBuilder bldr = new StringBuilder(API_SEARCH_ITEM);
+		bldr.append(name).append("/").append(pageOffset);
+		return bldr.toString();
+	}
+
+	private static String buildRecipeListArgument(final int disciplineId, final int pageOffset) {
+		final StringBuilder bldr = new StringBuilder(API_LIST_RECIPE);
+		bldr.append(disciplineId).append("/").append(pageOffset);
+		return bldr.toString();
+	}
+
+	private static String checkResult(final String result) throws SpidyException {
+		if (result.equals("{}")) {
+			throw new SpidyException("Result was empty!");
+		} else {
+			return result;
+		}
+	}
+
+	/**
+	 * Returns a list of all crafting disciplines.
+	 * 
+	 * @return String in JSON format.
+	 * @throws SpidyException
+	 *             if something went wrong.
+	 */
+	public static List<Discipline> getDisciplines() throws SpidyException {
+		return getDisciplines(SpidyFormat.JSON);
+	}
+
 	/**
 	 * Returns a list of all crafting disciplines.
 	 * 
@@ -56,12 +104,13 @@ public class SpidyWrapper {
 	 * @throws SpidyException
 	 *             if something went wrong.
 	 */
-	public static String getDisciplines(SpidyFormat format)
-			throws SpidyException {
+	public static List<Discipline> getDisciplines(final SpidyFormat format) throws SpidyException {
 		try {
-			URL url = buildAPIURL(format, API_LIST_DISCIPLINE);
-			return checkResult(readBufferedReader(url));
-		} catch (IOException e) {
+			final URL url = buildAPIURL(format, API_LIST_DISCIPLINE);
+			final String response = checkResult(readBufferedReader(url));
+			final SpidyDisciplineResult spidyDisciplineResult = gson.fromJson(response, SpidyDisciplineResult.class);
+			return Arrays.asList(spidyDisciplineResult.getResults());
+		} catch (final IOException e) {
 			throw new SpidyException("No connection!", e);
 		}
 	}
@@ -78,13 +127,11 @@ public class SpidyWrapper {
 	 * @throws SpidyException
 	 *             if something went wrong.
 	 */
-	public static String getFullItemList(SpidyFormat format, int typeId)
-			throws SpidyException {
+	public static String getFullItemList(final SpidyFormat format, final int typeId) throws SpidyException {
 		try {
-			URL url = buildAPIURL(format, API_LIST_ITEM_FULL
-					+ (typeId == -1 ? "all" : typeId));
+			final URL url = buildAPIURL(format, API_LIST_ITEM_FULL + (typeId == -1 ? "all" : typeId));
 			return readBufferedReader(url);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new SpidyException("No items for type ID: " + typeId);
 		}
 	}
@@ -100,12 +147,11 @@ public class SpidyWrapper {
 	 * @throws SpidyException
 	 *             if something went wrong.
 	 */
-	public static String getGemPrice(SpidyFormat format)
-			throws SpidyException {
+	public static String getGemPrice(final SpidyFormat format) throws SpidyException {
 		try {
-			URL url = buildAPIURL(format, API_GEM_PRICE);
+			final URL url = buildAPIURL(format, API_GEM_PRICE);
 			return checkResult(readBufferedReader(url));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new SpidyException("No connection!", e);
 		}
 	}
@@ -122,12 +168,11 @@ public class SpidyWrapper {
 	 * @throws SpidyException
 	 *             if something went wrong.
 	 */
-	public static String getItem(SpidyFormat format, int itemId)
-			throws SpidyException {
+	public static String getItem(final SpidyFormat format, final int itemId) throws SpidyException {
 		try {
-			URL url = buildAPIURL(format, API_ITEM + itemId);
+			final URL url = buildAPIURL(format, API_ITEM + itemId);
 			return checkResult(readBufferedReader(url));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new SpidyException("No connection!" + itemId, e);
 		}
 	}
@@ -149,14 +194,12 @@ public class SpidyWrapper {
 	 * @throws SpidyException
 	 *             if something went wrong.
 	 */
-	public static String getItemListings(SpidyFormat format,
-			SpidyBuyOrSell buyOrSell, int itemId, int pages)
+	public static String getItemListings(final SpidyFormat format, final SpidyBuyOrSell buyOrSell, final int itemId, final int pages)
 			throws SpidyException {
 		try {
-			URL url = buildAPIURL(format,
-					buildItemListingsArgument(itemId, buyOrSell, pages));
+			final URL url = buildAPIURL(format, buildItemListingsArgument(itemId, buyOrSell, pages));
 			return checkResult(readBufferedReader(url));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new SpidyException("No connection!", e);
 		}
 	}
@@ -176,13 +219,11 @@ public class SpidyWrapper {
 	 * @throws SpidyException
 	 *             if something went wrong.
 	 */
-	public static String getItems(SpidyFormat format, String itemName, int pages)
-			throws SpidyException {
+	public static String getItems(final SpidyFormat format, final String itemName, final int pages) throws SpidyException {
 		try {
-			URL url = buildAPIURL(format,
-					buildItemNameArgument(itemName, pages));
+			final URL url = buildAPIURL(format, buildItemNameArgument(itemName, pages));
 			return checkResult(readBufferedReader(url));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new SpidyException("No connection!" + itemName, e);
 		}
 	}
@@ -197,12 +238,11 @@ public class SpidyWrapper {
 	 * @throws SpidyException
 	 *             if something went wrong.
 	 */
-	public static String getRarities(SpidyFormat format)
-			throws SpidyException {
+	public static String getRarities(final SpidyFormat format) throws SpidyException {
 		try {
-			URL url = buildAPIURL(format, API_LIST_RARITY);
+			final URL url = buildAPIURL(format, API_LIST_RARITY);
 			return checkResult(readBufferedReader(url));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new SpidyException("No connection!", e);
 		}
 	}
@@ -219,12 +259,11 @@ public class SpidyWrapper {
 	 * @throws SpidyException
 	 *             if something went wrong.
 	 */
-	public static String getRecipeData(SpidyFormat format, int dataId)
-			throws SpidyException {
+	public static String getRecipeData(final SpidyFormat format, final int dataId) throws SpidyException {
 		try {
-			URL url = buildAPIURL(format, API_RECIPE + dataId);
+			final URL url = buildAPIURL(format, API_RECIPE + dataId);
 			return checkResult(readBufferedReader(url));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new SpidyException("No connection!", e);
 		}
 	}
@@ -244,15 +283,12 @@ public class SpidyWrapper {
 	 * @throws SpidyException
 	 *             if something went wrong.
 	 */
-	public static String getRecipeList(SpidyFormat format, int disciplineId,
-			int pages) throws SpidyException {
+	public static String getRecipeList(final SpidyFormat format, final int disciplineId, final int pages) throws SpidyException {
 		try {
-			URL url = buildAPIURL(format,
-					buildRecipeListArgument(disciplineId, pages));
+			final URL url = buildAPIURL(format, buildRecipeListArgument(disciplineId, pages));
 			return readBufferedReader(url);
-		} catch (IOException e) {
-			throw new SpidyException("No recipes for discipline ID: "
-					+ disciplineId);
+		} catch (final IOException e) {
+			throw new SpidyException("No recipes for discipline ID: " + disciplineId);
 		}
 	}
 
@@ -266,59 +302,21 @@ public class SpidyWrapper {
 	 * @throws SpidyException
 	 *             if something went wrong.
 	 */
-	public static String getTypes(SpidyFormat format)
-			throws SpidyException {
+	public static String getTypes(final SpidyFormat format) throws SpidyException {
 		try {
-			URL url = buildAPIURL(format, API_LIST_TYPE);
+			final URL url = buildAPIURL(format, API_LIST_TYPE);
 			return checkResult(readBufferedReader(url));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new SpidyException("No connection!", e);
 		}
 	}
 
-	private static URL buildAPIURL(SpidyFormat format, String argument)
-			throws MalformedURLException {
-		StringBuilder bldr = new StringBuilder(BASE_URL);
-		bldr.append(SpidyVersion.V_09).append(format).append(argument);
-		return new URL(bldr.toString());
-	}
-
-	private static String buildItemListingsArgument(int itemId,
-			SpidyBuyOrSell buyOrSell, int pageOffset) {
-		StringBuilder bldr = new StringBuilder(API_LISTINGS);
-		bldr.append(itemId).append("/").append(buyOrSell).append(pageOffset);
-		return bldr.toString();
-	}
-
-	private static String buildItemNameArgument(String name, int pageOffset) {
-		StringBuilder bldr = new StringBuilder(API_SEARCH_ITEM);
-		bldr.append(name).append("/").append(pageOffset);
-		return bldr.toString();
-	}
-
-	private static String buildRecipeListArgument(int disciplineId,
-			int pageOffset) {
-		StringBuilder bldr = new StringBuilder(API_LIST_RECIPE);
-		bldr.append(disciplineId).append("/").append(pageOffset);
-		return bldr.toString();
-	}
-
-	private static String readBufferedReader(URL url) throws IOException {
-		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+	private static String readBufferedReader(final URL url) throws IOException {
+		final HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setRequestProperty("User-Agent", USER_AGENT);
-		BufferedReader bf = new BufferedReader(new InputStreamReader(
-				con.getInputStream()));
-		String result = bf.readLine();
+		final BufferedReader bf = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		final String result = bf.readLine();
 		bf.close();
 		return result;
-	}
-
-	private static String checkResult(String result)
-			throws SpidyException {
-		if (result.equals("{}")) {
-			throw new SpidyException("Result was empty!");
-		} else {
-			return result;
-		}
 	}
 }
