@@ -1,8 +1,10 @@
 package de.chemist.gw2;
 
+import java.util.List;
+
 import org.junit.Test;
 
-import rodeo.base.ws.pojos.SpidyDisciplineResult;
+import rodeo.base.dao.pojos.Discipline;
 
 public class SpidyWrapperTest {
 
@@ -10,8 +12,8 @@ public class SpidyWrapperTest {
 	public void testGetDisciplines() {
 		System.out.print("Disciplines: ");
 		try {
-			final SpidyDisciplineResult result = SpidyWrapper.getDisciplines(SpidyFormat.JSON);
-			System.out.println(result);
+			final List<Discipline> disciplines = SpidyWrapper.getDisciplines(SpidyFormat.JSON);
+			System.out.println(disciplines);
 		} catch (final SpidyException swe) {
 			System.out.println(swe.getMessage());
 		}
